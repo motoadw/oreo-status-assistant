@@ -11,7 +11,6 @@ import { APP_VERSION } from "../constants/version";
 import { recordView } from "../lib/viewCounter";
 import NotificationPermission from "../components/NotificationPermission";
 
-
 function formatUpdatedAt(isoString) {
   if (!isoString) return "";
   const date = new Date(isoString);
@@ -33,7 +32,9 @@ export default function ViewerPage() {
   useEffect(() => {
     if (hasRecordedView.current) return;
     hasRecordedView.current = true;
-    recordView().catch((err) => console.error("บันทึกการเข้าชมไม่สำเร็จ:", err));
+    recordView().catch((err) =>
+      console.error("บันทึกการเข้าชมไม่สำเร็จ:", err),
+    );
   }, []);
 
   if (!data) {
@@ -49,15 +50,20 @@ export default function ViewerPage() {
 
   return (
     <div className="min-h-dvh bg-app-gradient flex flex-col items-center justify-center px-6 py-10">
-      <div className="relative w-full max-w-sm">
-        <ThemeToggle />
-        
-        <NotificationPermission role="viewer" />
-
+      <div className="w-full max-w-sm">
         <div
           key={data.status}
           className="w-full glass-card p-6 flex flex-col items-center gap-4 animate-[fadeIn_0.4s_ease-out]"
         >
+          <div className="w-full grid grid-cols-2 items-center -mt-1 -mb-1">
+            <div className="flex justify-start min-w-0">
+              <NotificationPermission role="viewer" />
+            </div>
+            <div className="flex justify-end">
+              <ThemeToggle inline />
+            </div>
+          </div>
+
           <p className="text-xs text-ink/40 tracking-wide uppercase -mb-1 flex items-center gap-1.5">
             <PawPrint className="w-3.5 h-3.5 text-primary" />
             Oreo Status

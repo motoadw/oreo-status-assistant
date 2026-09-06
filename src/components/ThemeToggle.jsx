@@ -9,7 +9,10 @@ function getInitialTheme() {
   return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
 }
 
-export default function ThemeToggle() {
+/**
+ * @param {{ inline?: boolean }} props - inline=true วางในแนว flex ปกติ, false (default) ลอย fixed มุมจอ
+ */
+export default function ThemeToggle({ inline = false }) {
   const [theme, setTheme] = useState(getInitialTheme);
 
   useEffect(() => {
@@ -21,10 +24,14 @@ export default function ThemeToggle() {
     setTheme((prev) => (prev === "dark" ? "light" : "dark"));
   }
 
+  const positionClass = inline
+    ? "relative w-9 h-9"
+    : "absolute top-4 left-4 z-40 w-10 h-10";
+
   return (
     <button
       onClick={toggleTheme}
-      className="absolute top-4 left-4 z-40 w-10 h-10 rounded-full glass-card flex items-center justify-center btn-press"
+      className={`${positionClass} rounded-full glass-card flex items-center justify-center btn-press`}
       title={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
     >
       {theme === "dark" ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
